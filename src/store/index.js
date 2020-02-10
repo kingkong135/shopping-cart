@@ -9,23 +9,21 @@ new Vuex.Store({
     },
 
     getters: {
-        productCount () {
+        productCount() {
 
         }
     },
 
     actions: {
-        fetchProduct () {
+        fetchProduct() {
             // make the call
 
         }
     },
 
     mutations: {
-        setProducts () {
+        setProducts() {
             // update products
         }
     }
-
-
 })

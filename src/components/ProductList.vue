@@ -12,15 +12,16 @@
 
 <script>
     import shop from "@/api/shop";
+
     export default {
         name: "ProductList",
-        data () {
+        data() {
             return {
                 products: []
             }
         },
 
-        created () {
+        created() {
             shop.getProducts(products => {
                 this.products = products
                 console.this.prodcuts;
