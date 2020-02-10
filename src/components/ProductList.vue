@@ -12,19 +12,19 @@
 
 <script>
     import shop from "@/api/shop";
-
+    import store from "@/store/index"
     export default {
         name: "ProductList",
-        data() {
-            return {
-                products: []
+
+        computed: {
+            products() {
+                return store.state.products
             }
         },
 
         created() {
             shop.getProducts(products => {
-                this.products = products
-                console.this.prodcuts;
+                store.commit('setProducts', products)
             })
         }
     }
