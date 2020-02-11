@@ -7,7 +7,9 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: { // data
-        products: []
+        products: [],
+        // {id, quanity }
+        cart: []
     },
 
     getters: {
@@ -28,13 +30,21 @@ export default new Vuex.Store({
             })
         },
 
-        // addToCart(context, product) {
-        //     if (product.inventory > 0) {
-        //         context.commit('pushProductToCart', product)
-        //     } else {
-        //         // show out of stock message
-        //     }
-        // }
+       addProductToCart( context, product) {
+            if (product.inventory > 0) {
+                const cartItem = context.state.cart.find(item => item.id === product.id)
+                // find cartItem
+                if (!cartItem) {
+                    // push Product to cart
+                    context.commit('pushProductToCart', product.id)
+                } else {
+                    // incrementItemQuantity
+                    context.commit('incrementItemQuantity', cartItem)
+                }
+                context.commit('decrementProductInventory', product)
+            }
+
+       }
     },
 
     mutations: {
@@ -42,6 +52,23 @@ export default new Vuex.Store({
             // update products
 
             state.products = products
+        },
+
+        // const cartItem = {id: 123, quantity: 2}
+        pushProductToCart(state, productId) {
+            state.cart.push({
+                id: productId,
+                quanity: 1
+            })
+        },
+
+        incrementItemQuantity(state, cartItem) {
+            cartItem.quanity++
+        },
+
+        decrementProductInventory(state, product) {
+            product.inventory--
         }
+
     }
 })
