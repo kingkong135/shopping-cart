@@ -15,6 +15,21 @@ export default new Vuex.Store({
     getters: {
         availableProducts: state => {
             return state.products.filter(product => product.inventory > 0)
+        },
+
+        cartProducts(state) {
+            return state.cart.map(cartItem => {
+                const product = state.products.find(product => product.id === cartItem.id);
+                return {
+                    title: product.title,
+                    price: product.price,
+                    quantity: cartItem.quantity
+                }
+            })
+        },
+
+        cartTotal (state, getters) {
+            return getters.cartProducts.reduce((total, product) => total + product.price * product.quantity, 0)
         }
     },
 
@@ -24,7 +39,7 @@ export default new Vuex.Store({
                 // call setProducts mutation
                 // call setProducts mutation
                 shop.getProducts(products => {
-                    commit('setProducts', products)
+                    commit('setProducts', products);
                     resolve()
                 })
             })
@@ -32,7 +47,7 @@ export default new Vuex.Store({
 
        addProductToCart( context, product) {
             if (product.inventory > 0) {
-                const cartItem = context.state.cart.find(item => item.id === product.id)
+                const cartItem = context.state.cart.find(item => item.id === product.id);
                 // find cartItem
                 if (!cartItem) {
                     // push Product to cart
@@ -50,7 +65,6 @@ export default new Vuex.Store({
     mutations: {
         setProducts(state, products) {
             // update products
-
             state.products = products
         },
 
@@ -58,12 +72,12 @@ export default new Vuex.Store({
         pushProductToCart(state, productId) {
             state.cart.push({
                 id: productId,
-                quanity: 1
+                quantity: 1
             })
         },
 
         incrementItemQuantity(state, cartItem) {
-            cartItem.quanity++
+            cartItem.quantity++
         },
 
         decrementProductInventory(state, product) {
