@@ -29,7 +29,7 @@
 
         computed: {
             ...mapState({
-                products: 'products'
+                products: state => state.products.items
             }),
 
            ...mapGetters({
